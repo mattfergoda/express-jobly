@@ -7,6 +7,7 @@ const express = require("express");
 
 const { BadRequestError } = require("../expressError");
 const { ensureLoggedIn } = require("../middleware/auth");
+const { ALLOWED_FILTERS } = require("../helpers/sql");
 const Company = require("../models/company");
 
 const companyNewSchema = require("../schemas/companyNew.json");
@@ -51,7 +52,15 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
  */
 
 router.get("/", async function (req, res, next) {
-  const companies = await Company.findAll();
+  debugger;
+  for(let q in req.query){
+    if(!(q in ALLOWED_FILTERS)){
+      throw new BadRequestError(`${q} is not a valid filter.`);
+    }
+  }
+
+  const companies = await Company.findAll(req.query);
+
   return res.json({ companies });
 });
 
