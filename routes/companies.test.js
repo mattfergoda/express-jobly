@@ -97,7 +97,7 @@ describe("GET /companies", function () {
   });
 
   test("ok for anon: with all valid filters", async function () {
-    const resp = request(app)
+    const resp = await request(app)
       .get('/companies')
       .query(
         {
