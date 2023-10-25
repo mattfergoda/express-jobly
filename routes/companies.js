@@ -7,7 +7,7 @@ const express = require("express");
 
 const { BadRequestError } = require("../expressError");
 const { ensureLoggedIn } = require("../middleware/auth");
-const { ALLOWED_FILTERS } = require("../helpers/sql");
+const { ALLOWED_FILTERS } = require("../helpers/companies");
 const Company = require("../models/company");
 
 const companyNewSchema = require("../schemas/companyNew.json");
@@ -52,7 +52,8 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
  */
 
 router.get("/", async function (req, res, next) {
-  debugger;
+  // TODO: use json schema, req.query are read only(non-mutatable), make a deep copy and mutate and pass into json schema, for consistency of rest of app
+  // const var = req.query deep copy
   for(let q in req.query){
     if(!(q in ALLOWED_FILTERS)){
       throw new BadRequestError(`${q} is not a valid filter.`);

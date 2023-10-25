@@ -102,7 +102,7 @@ describe("GET /companies", function () {
       .query(
         {
           nameLike: 'c',
-          minEmployees: 1,
+          minEmployees: 2,
           maxEmployees: 2
         });
 
@@ -132,7 +132,7 @@ describe("GET /companies", function () {
     });
   });
 
-
+// TODO: more details on test
 });
 
 /************************************** GET /companies/:handle */

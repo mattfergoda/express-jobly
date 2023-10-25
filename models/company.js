@@ -2,7 +2,9 @@
 
 const db = require("../db");
 const { BadRequestError, NotFoundError } = require("../expressError");
-const { sqlForPartialUpdate, sqlForFilter } = require("../helpers/sql");
+const { sqlForPartialUpdate } = require("../helpers/sql");
+const { sqlForFilter } = require("../helpers/companies");
+
 
 /** Related functions for companies. */
 
