@@ -24,13 +24,12 @@ const { BadRequestError } = require("../expressError");
  */
 
 function sqlForPartialUpdate(dataToUpdate, jsToSql) {
-  debugger;
   const keys = Object.keys(dataToUpdate);
   if (keys.length === 0) throw new BadRequestError("No data");
 
   // {firstName: 'Aliya', age: 32} => ['"first_name"=$1', '"age"=$2']
   const cols = keys.map((colName, idx) =>
-      `"${jsToSql[colName] || colName}"=$${idx + 1}`,
+    `"${jsToSql[colName] || colName}"=$${idx + 1}`,
   );
 
   return {
@@ -39,4 +38,45 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
   };
 }
 
-module.exports = { sqlForPartialUpdate };
+/**
+ *
+ */
+
+const ALLOWED_FILTERS = {
+  "nameLike": '\"name\" ILIKE',
+  "minEmployees": '\"num_employees\" >=',
+  "maxEmployees": '\"num_employees\" <='
+};
+
+function sqlForFilter(filters) {
+
+  const keys = Object.keys(filters);
+  if (keys.length === 0) {
+    return {
+      "whereClause": ``,
+      "values": []
+    };
+  }
+
+  if (filters['minEmployees'] > filters['maxEmployees']) {
+    throw new BadRequestError("minEmployees must be less than maxEmployees");
+  }
+
+  const filterClause = keys.map((filter, idx) => {
+    if (filter in ALLOWED_FILTERS) {
+      return `${ALLOWED_FILTERS[filter]} $${idx + 1}`;
+    }
+  }
+  );
+
+  return {
+    whereClause: "WHERE " + filterClause.join(" AND "),
+    values: Object.values(filters),
+  };
+}
+
+
+module.exports = {
+  sqlForPartialUpdate,
+  sqlForFilter
+};

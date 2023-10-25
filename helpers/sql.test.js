@@ -1,6 +1,6 @@
 "use strict";
 
-const { sqlForPartialUpdate } = require("./sql");
+const { sqlForPartialUpdate, sqlForFilter } = require("./sql");
 const { BadRequestError } = require("../expressError");
 
 const NEW_USER_DATA = {
@@ -51,9 +51,7 @@ describe("sqlForFilter", function () {
 
     expect(result).toEqual({
       "whereClause":
-      `WHERE \"name\" ILIKE $1,
-      \"num_employees\" >= $2,
-      \"num_employees\" <= $3`,
+      `WHERE \"name\" ILIKE $1 AND \"num_employees\" >= $2 AND \"num_employees\" <= $3`,
       "values": ["net", 1, 100]
     });
   });
@@ -79,8 +77,7 @@ describe("sqlForFilter", function () {
 
     expect(result).toEqual({
       "whereClause":
-      `WHERE \"num_employees\" >= $1,
-       \"num_employees\" <= $2`,
+      `WHERE \"num_employees\" >= $1 AND \"num_employees\" <= $2`,
       "values": [1, 100]
     });
   });
