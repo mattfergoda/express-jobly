@@ -59,8 +59,8 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
  */
 
 function sqlForFilter(filters) {
+  const keys = filters ? Object.keys(filters) : [];
 
-  const keys = Object.keys(filters);
   if (keys.length === 0) {
     return {
       "whereClause": ``,
@@ -91,5 +91,6 @@ function sqlForFilter(filters) {
 
 module.exports = {
   sqlForPartialUpdate,
-  sqlForFilter
+  sqlForFilter,
+  ALLOWED_FILTERS
 };
