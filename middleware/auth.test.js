@@ -51,6 +51,7 @@ describe("ensureLoggedIn", function () {
   test("works", function () {
     const req = {};
     const res = { locals: { user: { username: "test" } } };
+    // FIXME: where is your expect
     ensureLoggedIn(req, res, next);
   });
 
