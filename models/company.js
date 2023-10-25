@@ -52,10 +52,13 @@ class Company {
 
   /** Find all companies.
    *
+   * Takes object like
+   * { }
+   *
    * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
    * */
 
-  static async findAll() {
+  static async findAll(filters) {
     const companiesRes = await db.query(`
         SELECT handle,
                name,

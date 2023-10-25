@@ -85,6 +85,55 @@ describe("findAll", function () {
       },
     ]);
   });
+
+  test("works: with filters", async function () {
+    const filters = {
+      nameLike: "c",
+      minEmployees: 1,
+      maxEmployees: 2
+    }
+
+    let companies = await Company.findAll(filters);
+    expect(companies).toEqual([
+      {
+        handle: "c1",
+        name: "C1",
+        description: "Desc1",
+        numEmployees: 1,
+        logoUrl: "http://c1.img",
+      },
+      {
+        handle: "c2",
+        name: "C2",
+        description: "Desc2",
+        numEmployees: 2,
+        logoUrl: "http://c2.img",
+      }
+    ]);
+  });
+
+  test("works: with only nameLike", async function () {
+    const filters = {
+      nameLike: "d",
+    }
+
+    let companies = await Company.findAll(filters);
+    expect(companies).toEqual([]);
+  });
+
+  test("bad request with incoherent filters", async function () {
+    const filters = {
+      minEmployees: 2,
+      maxEmployees: 1
+    }
+
+    try {
+      await Company.findAll(filters);
+      throw new Error("fail test, you shouldn't get here");
+    } catch (err) {
+      expect(err instanceof BadRequestError).toBeTruthy();
+    }
+  });
 });
 
 /************************************** get */
