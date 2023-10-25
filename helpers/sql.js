@@ -2,8 +2,15 @@
 
 const { BadRequestError } = require("../expressError");
 
+const ALLOWED_FILTERS = {
+  "nameLike": '\"name\" ILIKE',
+  "minEmployees": '\"num_employees\" >=',
+  "maxEmployees": '\"num_employees\" <='
+};
 
 /**
+ * Builds a SQL SET clause for updating records based on user input.
+ *
  * Takes an object dataToUpdate like {firstName: 'Aliya', age: 32}
  * with data to replace existing data on the record.
  * Also take an object jsToSql like like
@@ -39,14 +46,17 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
 }
 
 /**
+ * Builds a SQL where clause based on user input.
  *
+ * Takes filters object like
+ * { nameLike [optional], minEmployees [optional], maxEmployees [optional] }
+ *
+ * Returns object { whereClause, values }
+ * Where whereClause is a string like
+ * "WHERE \"name\" ILIKE '%' || $1 || '%' AND \"num_employees\" >= $2"
+ * and values is an array like
+ * ['company', 1, 100]]
  */
-
-const ALLOWED_FILTERS = {
-  "nameLike": '\"name\" ILIKE',
-  "minEmployees": '\"num_employees\" >=',
-  "maxEmployees": '\"num_employees\" <='
-};
 
 function sqlForFilter(filters) {
 
@@ -64,6 +74,9 @@ function sqlForFilter(filters) {
 
   const filterClause = keys.map((filter, idx) => {
     if (filter in ALLOWED_FILTERS) {
+      if (filter === 'nameLike') {
+        return `${ALLOWED_FILTERS[filter]} '%' || $${idx + 1} || '%'`;
+      }
       return `${ALLOWED_FILTERS[filter]} $${idx + 1}`;
     }
   }

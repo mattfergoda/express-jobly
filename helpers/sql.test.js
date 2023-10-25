@@ -51,7 +51,7 @@ describe("sqlForFilter", function () {
 
     expect(result).toEqual({
       "whereClause":
-      `WHERE \"name\" ILIKE $1 AND \"num_employees\" >= $2 AND \"num_employees\" <= $3`,
+      `WHERE \"name\" ILIKE '%' || $1 || '%' AND \"num_employees\" >= $2 AND \"num_employees\" <= $3`,
       "values": ["net", 1, 100]
     });
   });
@@ -63,7 +63,7 @@ describe("sqlForFilter", function () {
     });
 
     expect(result).toEqual({
-      "whereClause": `WHERE \"name\" ILIKE $1`,
+      "whereClause": `WHERE \"name\" ILIKE '%' || $1 || '%'`,
       "values": ["net"]
     });
   });
