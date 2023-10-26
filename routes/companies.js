@@ -7,11 +7,11 @@ const express = require("express");
 
 const { BadRequestError } = require("../expressError");
 const { ensureLoggedIn } = require("../middleware/auth");
-const { ALLOWED_FILTERS } = require("../helpers/companies");
 const Company = require("../models/company");
 
 const companyNewSchema = require("../schemas/companyNew.json");
 const companyUpdateSchema = require("../schemas/companyUpdate.json");
+const companyGetAllSchema = require("../schemas/companyGetAll.json");
 
 const router = new express.Router();
 
@@ -52,15 +52,30 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
  */
 
 router.get("/", async function (req, res, next) {
-  // TODO: use json schema, req.query are read only(non-mutatable), make a deep copy and mutate and pass into json schema, for consistency of rest of app
+  // TODO: use json schema, req.query are read only(non-mutatable), make a
+  // deep copy and mutate and pass into json schema, for consistency of rest of app
   // const var = req.query deep copy
-  for(let q in req.query){
-    if(!(q in ALLOWED_FILTERS)){
-      throw new BadRequestError(`${q} is not a valid filter.`);
-    }
+  const query = req.query;
+
+  if (query.minEmployees) {
+    query.minEmployees = Number(query.minEmployees);
+  }
+  if (query.maxEmployees) {
+    query.maxEmployees = Number(query.maxEmployees);
   }
 
-  const companies = await Company.findAll(req.query);
+  const validator = jsonschema.validate(
+    query,
+    companyGetAllSchema,
+    {required:true}
+  );
+
+  if (!validator.valid) {
+    const errs = validator.errors.map(e => e.stack);
+    throw new BadRequestError(errs);
+  }
+
+  const companies = await Company.findAll(query);
 
   return res.json({ companies });
 });
