@@ -58,8 +58,16 @@ class Company {
 
   /** Find all companies.
    *
-   * Takes object like
-   * { }
+   * Takes filters object like
+   *
+   * { nameLike [optional], minEmployees [optional], maxEmployees[optional] }
+   *
+   * where
+   *  - nameLike is a string search term for searching by company name.
+   *  - minEmployees is an integer for filtering by minimum number of
+   *    employees, inclusive.
+   *  - maxEmployees is an integer for filtering by maximum number of
+   *    employees, inclusive.
    *
    * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
    * */
@@ -84,7 +92,7 @@ class Company {
    *
    * Returns { handle, name, description, numEmployees, logoUrl, jobs }
    *   where jobs is [{ id, title, salary, equity, companyHandle }, ...]
-   *
+   * TODO: Show jobs for a company
    * Throws NotFoundError if not found.
    **/
 
