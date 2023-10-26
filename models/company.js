@@ -3,8 +3,12 @@
 const db = require("../db");
 const { BadRequestError, NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
-const { sqlForFilter } = require("../helpers/companies");
 
+const ALLOWED_FILTERS = {
+  "nameLike": '\"name\" ILIKE',
+  "minEmployees": '\"num_employees\" >=',
+  "maxEmployees": '\"num_employees\" <='
+};
 
 /** Related functions for companies. */
 
@@ -61,7 +65,7 @@ class Company {
    * */
 
   static async findAll(filters) {
-    const { whereClause, values } = sqlForFilter(filters);
+    const { whereClause, values } = this._sqlWhereClauseBuilder(filters);
 
     const companiesRes = await db.query(`
         SELECT handle,
@@ -155,6 +159,49 @@ class Company {
 
     if (!company) throw new NotFoundError(`No company: ${handle}`);
   }
+
+  /**
+ * Builds a SQL where clause based on user input.
+ *
+ * Takes filters object like
+ * { nameLike [optional], minEmployees [optional], maxEmployees [optional] }
+ *
+ * Returns object { whereClause, values }
+ * Where whereClause is a string like
+ * "WHERE \"name\" ILIKE '%' || $1 || '%' AND \"num_employees\" >= $2"
+ * and values is an array like
+ * ['company', 1, 100]]
+ */
+
+static _sqlWhereClauseBuilder(filters) {
+  const keys = filters ? Object.keys(filters) : [];
+
+  if (keys.length === 0) {
+    return {
+      "whereClause": ``,
+      "values": []
+    };
+  }
+
+  if (filters['minEmployees'] > filters['maxEmployees']) {
+    throw new BadRequestError("minEmployees must be less than maxEmployees");
+  }
+
+  const filterClause = keys.map((filter, idx) => {
+    if (filter in ALLOWED_FILTERS) {
+      if (filter === 'nameLike') {
+        return `${ALLOWED_FILTERS[filter]} '%' || $${idx + 1} || '%'`;
+      }
+      return `${ALLOWED_FILTERS[filter]} $${idx + 1}`;
+    }
+  }
+  );
+
+  return {
+    whereClause: "WHERE " + filterClause.join(" AND "),
+    values: Object.values(filters),
+  };
+}
 }
 
 
