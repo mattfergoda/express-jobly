@@ -5,7 +5,8 @@ const { UnauthorizedError } = require("../expressError");
 const {
   authenticateJWT,
   ensureLoggedIn,
-  ensureAdmin
+  ensureAdmin,
+  ensureCorrectUserOrAdmin
 } = require("./auth");
 
 
@@ -82,9 +83,41 @@ describe("ensureAdmin", function(){
     expect(ensureAdmin(req, res, next)).toEqual(undefined);
   });
 
-  test("works: is_admin false", function () {
+  test("401 is_admin false", function () {
     const req = {};
     const res = { locals: { user : { username: "testAdmin", isAdmin: false } } };
+
+    expect(() => ensureAdmin(req, res, next)).toThrow(UnauthorizedError);
+  });
+
+  test("401 is_admin missing", function () {
+    const req = {};
+    const res = { locals: { user : { username: "testAdmin"} } };
+
+    expect(() => ensureAdmin(req, res, next)).toThrow(UnauthorizedError);
+  });
+})
+
+describe("ensureCorrectUserOrAdmin", function(){
+  test("works: is_admin true", function () {
+    const req = { params: { username: "testNonAdmin" } };
+    const res = { locals: { user : { username: "testAdmin", isAdmin: true } } };
+
+    // if no error, undefined
+    expect(ensureCorrectUserOrAdmin(req, res, next)).toEqual(undefined);
+  });
+
+  test("works: non-admin accessing themselves", function () {
+    const req = { params: { username: "testNonAdmin" } };
+    const res = { locals: { user : { username: "testNonAdmin", isAdmin: false } } };
+
+    // if no error, undefined
+    expect(ensureCorrectUserOrAdmin(req, res, next)).toEqual(undefined);
+  });
+
+  test("401 is_admin false and accessing other user", function () {
+    const req = { params: { username: "someone-else" } };
+    const res = { locals: { user : { username: "testNonAdmin", isAdmin: false } } };
 
     expect(() => ensureAdmin(req, res, next)).toThrow(UnauthorizedError);
   });
@@ -95,5 +128,4 @@ describe("ensureAdmin", function(){
 
     expect(() => ensureAdmin(req, res, next)).toThrow(UnauthorizedError);
   });
-
 })
