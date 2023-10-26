@@ -22,14 +22,14 @@ const router = new express.Router();
  *
  * Returns { handle, name, description, numEmployees, logoUrl }
  *
- * Authorization required: login
+ * Authorization required: admin
  */
-// FIXME:Needs admin
+
 router.post("/", ensureLoggedIn, ensureAdmin, async function (req, res, next) {
   const validator = jsonschema.validate(
     req.body,
     companyNewSchema,
-    {required: true}
+    { required: true }
   );
   if (!validator.valid) {
     const errs = validator.errors.map(e => e.stack);
@@ -39,6 +39,7 @@ router.post("/", ensureLoggedIn, ensureAdmin, async function (req, res, next) {
   const company = await Company.create(req.body);
   return res.status(201).json({ company });
 });
+
 
 /** GET /  =>
  *   { companies: [ { handle, name, description, numEmployees, logoUrl }, ...] }
@@ -65,7 +66,7 @@ router.get("/", async function (req, res, next) {
   const validator = jsonschema.validate(
     query,
     companyGetAllSchema,
-    {required:true}
+    { required: true }
   );
 
   if (!validator.valid) {
@@ -77,6 +78,7 @@ router.get("/", async function (req, res, next) {
 
   return res.json({ companies });
 });
+
 
 /** GET /[handle]  =>  { company }
  *
@@ -91,6 +93,7 @@ router.get("/:handle", async function (req, res, next) {
   return res.json({ company });
 });
 
+
 /** PATCH /[handle] { fld1, fld2, ... } => { company }
  *
  * Patches company data.
@@ -99,14 +102,14 @@ router.get("/:handle", async function (req, res, next) {
  *
  * Returns { handle, name, description, numEmployees, logo_url }
  *
- * Authorization required: login
+ * Authorization required: admin
  */
-// FIXME:Needs admin
+
 router.patch("/:handle", ensureLoggedIn, ensureAdmin, async function (req, res, next) {
   const validator = jsonschema.validate(
     req.body,
     companyUpdateSchema,
-    {required:true}
+    { required: true }
   );
   if (!validator.valid) {
     const errs = validator.errors.map(e => e.stack);
@@ -117,11 +120,12 @@ router.patch("/:handle", ensureLoggedIn, ensureAdmin, async function (req, res, 
   return res.json({ company });
 });
 
+
 /** DELETE /[handle]  =>  { deleted: handle }
  *
- * Authorization: login
+ * Authorization: admin
  */
-// FIXME:Needs admin
+
 router.delete("/:handle", ensureLoggedIn, ensureAdmin, async function (req, res, next) {
   await Company.remove(req.params.handle);
   return res.json({ deleted: req.params.handle });
