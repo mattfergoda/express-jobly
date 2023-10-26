@@ -112,6 +112,28 @@ describe("POST /users", function () {
     });
   });
 
+
+  test("400 for duplicate user creation", async function () {
+    const resp = await request(app)
+        .post("/users")
+        .send({
+          username: "u1",
+          firstName: "First-new",
+          lastName: "Last-newL",
+          password: "password-new",
+          email: "new@email.com",
+          isAdmin: false,
+        })
+        .set("authorization", `Bearer ${u2AdminToken}`);
+    expect(resp.statusCode).toEqual(400);
+    expect(resp.body).toEqual({
+      "error": {
+        "message": "Duplicate username: u1",
+        "status": 400
+      }
+    });
+  });
+
   test("bad request if missing data", async function () {
     const resp = await request(app)
         .post("/users")
@@ -393,6 +415,24 @@ describe("PATCH /users/:username", () => {
     });
     const isSuccessful = await User.authenticate("u1", "new-password");
     expect(isSuccessful).toBeTruthy();
+  });
+
+  test("bad request for username change", async function () {
+    const resp = await request(app)
+        .patch(`/users/u1`)
+        .send({
+          username: "new",
+        })
+        .set("authorization", `Bearer ${u2AdminToken}`);
+    expect(resp.status).toEqual(400);
+    expect(resp.body).toEqual({
+      "error": {
+        "message": [
+          "instance is not allowed to have the additional property \"username\""
+        ],
+        "status": 400
+      }
+    });
   });
 });
 
