@@ -80,6 +80,7 @@ describe("ensureAdmin", function(){
     const res = { locals: { user : { username: "testAdmin", isAdmin: true } } };
 
     // if no error, undefined
+    // ensureAdmin(req, res, next);
     expect(ensureAdmin(req, res, next)).toEqual(undefined);
   });
 
@@ -122,7 +123,7 @@ describe("ensureCorrectUserOrAdmin", function(){
     expect(() => ensureAdmin(req, res, next)).toThrow(UnauthorizedError);
   });
 
-  test("works: is_admin missing", function () {
+  test("401 is_admin missing", function () {
     const req = {};
     const res = { locals: { user : { username: "testAdmin"} } };
 
