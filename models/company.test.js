@@ -134,7 +134,7 @@ describe("findAll", function () {
       expect(err instanceof BadRequestError).toBeTruthy();
     }
   });
-  //TODO: check schema validation
+  
 });
 
 /************************************** get */

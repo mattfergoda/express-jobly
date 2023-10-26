@@ -2,6 +2,7 @@
 
 const db = require("../db");
 const { BadRequestError, NotFoundError } = require("../expressError");
+const { sqlForPartialUpdate } = require("../helpers/sql");
 
 /** Related functions for jobs. */
 class Job {
@@ -21,7 +22,7 @@ class Job {
         FROM companies
         WHERE handle = $1`, [companyHandle]);
 
-    if (companyCheck.rows[0].length === 0)
+    if (companyCheck.rows.length === 0)
       throw new BadRequestError(`Company doesn't exist: ${companyHandle}`);
 
     const result = await db.query(`
@@ -31,6 +32,7 @@ class Job {
                                   company_handle)
                 VALUES ($1, $2, $3, $4)
                 RETURNING
+                    id,
                     title,
                     salary,
                     equity,
@@ -114,9 +116,9 @@ class Job {
     const handleVarIdx = "$" + (values.length + 1);
 
     const querySql = `
-        UPDATE companies
+        UPDATE jobs
         SET ${setCols}
-        WHERE handle = ${handleVarIdx}
+        WHERE id = ${handleVarIdx}
         RETURNING
             id,
             title,
@@ -147,3 +149,5 @@ class Job {
     if (!job) throw new NotFoundError(`No job: ${id}`);
   }
 }
+
+module.exports = Job;
