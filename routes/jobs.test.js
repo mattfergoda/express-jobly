@@ -143,10 +143,281 @@ describe("GET /jobs", function () {
             salary: 3,
             equity: "0.3",
             companyHandle: "c3",
+          },
+          {
+            id: expect.any(Number),
+            title: "j4",
+            salary: 4,
+            equity: null,
+            companyHandle: "c3",
           }
         ]
     });
   });
+
+  test("ok for anon: with all valid filters", async function () {
+    const resp = await request(app)
+      .get('/jobs')
+      .query(
+        {
+          title: '2',
+          minSalary: 1,
+          hasEquity: true
+        });
+
+    expect(resp.body).toEqual({
+        jobs: [
+          {
+            id: expect.any(Number),
+            title: "j2",
+            salary: 2,
+            equity: "0.2",
+            companyHandle: "c2",
+          }
+        ]
+    });
+  });
+
+  test("ok for anon: with only title", async function () {
+    const resp = await request(app)
+      .get('/jobs')
+      .query(
+        {
+          title: 'j1',
+        });
+
+    expect(resp.body).toEqual({
+      jobs:
+        [
+          {
+            id: expect.any(Number),
+            title: "j1",
+            salary: 1,
+            equity: "0.1",
+            companyHandle: "c1",
+          }
+        ],
+    });
+  });
+
+  test("ok for anon: with only minSalary", async function () {
+    const resp = await request(app)
+      .get('/jobs')
+      .query(
+        {
+          minSalary: 2,
+        });
+
+    expect(resp.body).toEqual({
+      jobs:
+        [
+          {
+            id: expect.any(Number),
+            title: "j2",
+            salary: 2,
+            equity: "0.2",
+            companyHandle: "c2",
+          },
+          {
+            id: expect.any(Number),
+            title: "j3",
+            salary: 3,
+            equity: "0.3",
+            companyHandle: "c3",
+          },
+          {
+            id: expect.any(Number),
+            title: "j4",
+            salary: 4,
+            equity: null,
+            companyHandle: "c3",
+          }
+        ],
+    });
+  });
+
+  test("ok for anon: with only hasEquity", async function () {
+    const resp = await request(app)
+      .get('/jobs')
+      .query(
+        {
+          hasEquity: true,
+        });
+
+    expect(resp.body).toEqual({
+      jobs:
+        [
+          {
+            id: expect.any(Number),
+            title: "j1",
+            salary: 1,
+            equity: "0.1",
+            companyHandle: "c1",
+          },
+          {
+            id: expect.any(Number),
+            title: "j2",
+            salary: 2,
+            equity: "0.2",
+            companyHandle: "c2",
+          },
+          {
+            id: expect.any(Number),
+            title: "j3",
+            salary: 3,
+            equity: "0.3",
+            companyHandle: "c3",
+          }
+        ],
+    });
+  });
+
+  test("ok for anon: with title and minSalary", async function () {
+    const resp = await request(app)
+      .get('/jobs')
+      .query(
+        {
+          title: 'j',
+          minSalary: 3,
+        });
+
+    expect(resp.body).toEqual({
+      jobs:
+        [
+          {
+            id: expect.any(Number),
+            title: "j3",
+            salary: 3,
+            equity: "0.3",
+            companyHandle: "c3",
+          },
+          {
+            id: expect.any(Number),
+            title: "j4",
+            salary: 4,
+            equity: null,
+            companyHandle: "c3",
+          }
+        ],
+    });
+  });
+
+  test("ok for anon: with minSalary and hasEquity", async function () {
+    const resp = await request(app)
+      .get('/jobs')
+      .query(
+        {
+          minSalary: 2,
+          hasEquity: false,
+        });
+
+    expect(resp.body).toEqual({
+      jobs:
+        [
+          {
+            id: expect.any(Number),
+            title: "j2",
+            salary: 2,
+            equity: "0.2",
+            companyHandle: "c2",
+          },
+          {
+            id: expect.any(Number),
+            title: "j3",
+            salary: 3,
+            equity: "0.3",
+            companyHandle: "c3",
+          },
+          {
+            id: expect.any(Number),
+            title: "j4",
+            salary: 4,
+            equity: null,
+            companyHandle: "c3",
+          }
+        ],
+    });
+  });
+
+  test("ok for anon: with title and hasEquity", async function () {
+    const resp = await request(app)
+      .get('/jobs')
+      .query(
+        {
+          title: "2",
+          hasEquity: true,
+        });
+
+    expect(resp.body).toEqual({
+      jobs:
+        [
+          {
+            id: expect.any(Number),
+            title: "j2",
+            salary: 2,
+            equity: "0.2",
+            companyHandle: "c2",
+          }
+        ],
+    });
+  });
+
+  test("return 400 error for invalid filter", async function () {
+    const resp = await request(app)
+      .get("/jobs")
+      .query({ monkey: 3000 });
+    expect(resp.body).toEqual({
+      "error": {
+        "message": [
+          "instance is not allowed to have the additional property \"monkey\"",
+        ],
+        "status": 400
+      }
+    });
+  });
+
+  test("return 400 error for invalid title", async function () {
+    const resp = await request(app)
+      .get("/jobs")
+      .query({ title: "fooooooooooooooooooooooooooooooooooooooooooooooooooo" });
+    expect(resp.body).toEqual({
+      "error": {
+        "message": [
+          "instance.title does not meet maximum length of 50",
+        ],
+        "status": 400
+      }
+    });
+  });
+
+  test("return 400 error for invalid minSalary", async function () {
+    const resp = await request(app)
+      .get("/jobs")
+      .query({ minSalary: -100 });
+    expect(resp.body).toEqual({
+      "error": {
+        "message": [
+          "instance.minSalary must be greater than or equal to 0",
+        ],
+        "status": 400
+      }
+    });
+  });
+
+  test("return 400 error for invalid hasEquity", async function () {
+    const resp = await request(app)
+      .get("/jobs")
+      .query({ hasEquity: "foo" });
+    expect(resp.body).toEqual({
+      "error": {
+        "message": [
+          "instance.hasEquity is not of a type(s) boolean",
+        ],
+        "status": 400
+      }
+    });
+  });
+
 });
 
 /************************************** GET /jobs/:id */

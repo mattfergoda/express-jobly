@@ -91,7 +91,13 @@ job = await Job.create(
     });
 testJobs.push(job);
 
-console.log("Inside commonBeforeAll testJobs=", testJobs);
+job = await Job.create(
+  {
+    title: "j4",
+    salary: 4,
+    companyHandle: "c3",
+  });
+testJobs.push(job);
 }
 
 async function commonBeforeEach() {

@@ -44,8 +44,14 @@ router.post("/", ensureLoggedIn, ensureAdmin, async function (req, res, next) {
 /** GET /  =>
  *   { jobs: [ { id, title, salary, equity, companyHandle }, ...] }
  *
+ * Can filter on provided search filters in query params:
+ * - title [string]
+ * - minSalary [integer]
+ * - hasEquity [boolean]
+ *
  * Authorization required: none
  */
+
 
 router.get("/", async function (req, res, next) {
   const query = req.query;
@@ -55,6 +61,9 @@ router.get("/", async function (req, res, next) {
   }
   if (query.hasEquity === "true") {
     query.hasEquity = true;
+  }
+  if (query.hasEquity === "false") {
+    delete query.hasEquity;
   }
 
   const validator = jsonschema.validate(
