@@ -11,7 +11,8 @@ class Job {
    *
    * data should be { title, salary, equity, companyHandle }
    *
-   * Returns { id, title, salary, equity, companyHandle }
+   * Returns { company } where company is like:
+   * { id, title, salary, equity, companyHandle }
    *
    * Throws BadRequestError if company doesn't exist.
    * */
