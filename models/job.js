@@ -61,22 +61,22 @@ class Job {
    *
    * Takes object like
    * { }
-   *
+   *TODO: complete docstring
    * Returns [{ id, title, salary, equity, companyHandle }, ...]
    * */
 
   static async findAll(filters) {
     const { whereClause, values } = this._sqlWhereClauseBuilder(filters)
 
-    console.log("SQL Statement", `
-    SELECT id,
-           title,
-           salary,
-           equity,
-           company_handle AS "companyHandle"
-    FROM jobs
-    ${whereClause}
-    ORDER BY title`)
+    // console.log("SQL Statement", `
+    // SELECT id,
+    //        title,
+    //        salary,
+    //        equity,
+    //        company_handle AS "companyHandle"
+    // FROM jobs
+    // ${whereClause}
+    // ORDER BY title`)
     const jobRes = await db.query(`
         SELECT id,
                title,
@@ -93,9 +93,9 @@ class Job {
 
 
   /** Given a job id, return data about job.
-   *
+   * 
    * Returns { id, title, salary, equity, companyHandle }
-   *   where jobs is [{ id, title, salary, equity, companyHandle }, ...]
+   *
    *
    * Throws NotFoundError if not found.
    **/

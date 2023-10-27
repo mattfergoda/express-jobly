@@ -16,7 +16,7 @@ const jobGetAllSchema = require("../schemas/jobGetAll.json");
 const router = new express.Router();
 
 /** POST / { job } =>  { job }
- *
+ * TODO: specificy input and out
  * job should be { title, salary, equity, companyHandle }
  *
  * Returns { job }
@@ -62,6 +62,7 @@ router.get("/", async function (req, res, next) {
   if (query.hasEquity === "true") {
     query.hasEquity = true;
   }
+  // TODO: explain ambiguos code
   if (query.hasEquity === "false") {
     delete query.hasEquity;
   }
