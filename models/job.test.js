@@ -210,3 +210,64 @@ describe("remove", function () {
     }
   });
 });
+
+/************************* helper function sqlWhereClauseBuilder*/
+
+describe("_sqlWhereClauseBuilder", function () {
+  test("works all filters", function () {
+    const result = Job._sqlWhereClauseBuilder(
+      {
+        title: "j",
+        minSalary: 1,
+        hasEquity: true
+    });
+
+    expect(result).toEqual({
+      "whereClause":
+      `WHERE \"title\" ILIKE '%' || $1 || '%' AND \"salary\" >= $2 AND \"equity\" > $3`,
+      "values": ["j", 1, 0]
+    });
+  });
+
+  test("works only title", function () {
+    const result = Job._sqlWhereClauseBuilder(
+      {
+        title: "j",
+    });
+
+    expect(result).toEqual({
+      "whereClause": `WHERE \"title\" ILIKE '%' || $1 || '%'`,
+      "values": ["j"]
+    });
+  });
+
+  test("works with filters minSalary, hasEquity true", function () {
+    const result = Job._sqlWhereClauseBuilder(
+      {
+        minSalary: 1,
+        hasEquity: true
+    });
+
+    expect(result).toEqual({
+      "whereClause":
+      `WHERE \"salary\" >= $1 AND \"equity\" > $2`,
+      "values": [1, 0]
+    });
+  });
+
+  test("works when no data is passed", function () {
+    const result = Job._sqlWhereClauseBuilder({});
+
+    expect(result).toEqual({
+      "whereClause":``,
+      "values": []
+    });
+  });
+
+  test("error if hasEquity is false", function () {
+    const badFilters = {hasEquity: false}
+
+    expect(() => Job._sqlWhereClauseBuilder(badFilters)).toThrow(Error);
+  });
+
+});

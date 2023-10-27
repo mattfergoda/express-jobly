@@ -201,9 +201,13 @@ static _sqlWhereClauseBuilder(filters) {
         values.push(filters[filter]);
         return `${ALLOWED_FILTERS[filter]} '%' || $${idx + 1} || '%'`;
       }
-      if (filter === 'hasEquity' && filters[filter] === true){
-        values.push(ALLOWED_MIN_EQUITY);
-        return `${ALLOWED_FILTERS[filter]} $${idx + 1}`;
+      if (filter === 'hasEquity'){
+        if(filters[filter] === true){
+          values.push(ALLOWED_MIN_EQUITY);
+          return `${ALLOWED_FILTERS[filter]} $${idx + 1}`;
+        } else {
+          throw new Error("Should remove hasEquity in route if false.");
+        }
       }
       values.push(filters[filter]);
       return `${ALLOWED_FILTERS[filter]} $${idx + 1}`;
