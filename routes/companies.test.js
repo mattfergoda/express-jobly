@@ -471,7 +471,6 @@ describe("PATCH /companies/:handle", function () {
         "status": 404
       }
     });
-
   });
 
   test("bad request on handle change attempt", async function () {
@@ -513,7 +512,7 @@ describe("PATCH /companies/:handle", function () {
 /************************************** DELETE /companies/:handle */
 
 describe("DELETE /companies/:handle", function () {
-  test("works for users", async function () {
+  test("works for admin users", async function () {
     const resp = await request(app)
       .delete(`/companies/c1`)
       .set("authorization", `Bearer ${u2AdminToken}`);

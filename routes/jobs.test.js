@@ -13,13 +13,17 @@ const {
   commonAfterEach,
   commonAfterAll,
   u1NonAdminToken,
-  u2AdminToken
+  u2AdminToken,
+  testJobs
 } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
 beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
+
+const testJob = testJobs[0];
+console.log("jobs.test.js testJobs=", testJobs);
 
 /************************************** POST /jobs */
 
@@ -145,20 +149,17 @@ describe("GET /jobs", function () {
   });
 });
 
-/************************************** GET /companies/:handle */
+/************************************** GET /jobs/:id */
 describe("GET /jobs/:id", function () {
 
   test("works for anon", async function () {
-    const jobs = await Job.findAll();
-    const jobId = jobs[0].id;
-    const job = await Job.get(jobId);
+    const testJob = testJobs[0];
+    const resp = await request(app).get(`/jobs/${testJob.id}`);
 
-    const resp = await request(app).get(`/jobs/${jobId}`);
-
-    expect(resp.body).toEqual({ job });
+    expect(resp.body).toEqual({ job: testJob });
   });
 
-  test("not found for no such company", async function () {
+  test("not found for no such job", async function () {
     const resp = await request(app).get(`/jobs/-1`);
     expect(resp.statusCode).toEqual(404);
     expect(resp.body).toEqual({
@@ -174,17 +175,170 @@ describe("GET /jobs/:id", function () {
 
 describe("PATCH /jobs/:id", function () {
   test("authorized for admin", async function () {
-    const jobs = await Job.findAll();
-    const jobId = jobs[0].id;
-    const job = await Job.get(jobId);
-
-    console.log("job id", jobId)
+    const testJob = testJobs[0];
     const resp = await request(app)
-      .patch(`/jobs/${jobId}`)
+      .patch(`/jobs/${testJob.id}`)
       .send({
         title: "j1-new",
       })
       .set("authorization", `Bearer ${u2AdminToken}`);
-    expect(resp.body).toEqual({ job: {...job, title:"j1-new"} });
+    expect(resp.body).toEqual({ job: {...testJob, title:"j1-new"} });
+  });
+
+  test("unauthorized for non-admin users", async function () {
+    const testJob = testJobs[0];
+    const resp = await request(app)
+      .patch(`/jobs/${testJob.id}`)
+      .send({
+        title: "j1-new",
+      })
+      .set("authorization", `Bearer ${u1NonAdminToken}`);
+    expect(resp.body).toEqual({
+      "error": {
+        "message": "Unauthorized",
+        "status": 401
+      }
+    });
+  });
+
+  test("unauthorized for anon", async function () {
+    const testJob = testJobs[0];
+    const resp = await request(app)
+      .patch(`/jobs/${testJob.id}`)
+      .send({
+        title: "j1-new",
+      });
+    expect(resp.statusCode).toEqual(401);
+    expect(resp.body).toEqual({
+      "error": {
+        "message": "Unauthorized",
+        "status": 401
+      }
+    });
+  });
+
+  test("not found on no such jobs", async function () {
+    const testJob = testJobs[0];
+    const resp = await request(app)
+      .patch(`/jobs/-1`)
+      .send({
+        title: "new nope",
+      })
+      .set("authorization", `Bearer ${u2AdminToken}`);
+    expect(resp.statusCode).toEqual(404);
+    expect(resp.body).toEqual({
+      "error": {
+        "message": "No job: -1",
+        "status": 404
+      }
+    });
+  });
+
+  test("bad request on companyHandle change attempt", async function () {
+    const testJob = testJobs[0];
+    const resp = await request(app)
+      .patch(`/jobs/${testJob.id}`)
+      .send({
+        companyHandle: "c1-new",
+      })
+      .set("authorization", `Bearer ${u2AdminToken}`);
+    expect(resp.statusCode).toEqual(400);
+    expect(resp.body).toEqual({
+      "error": {
+        "message": [
+          "instance is not allowed to have the additional property \"companyHandle\""
+        ],
+        "status": 400
+      }
+    });
+  });
+
+  test("bad request on invalid salary", async function () {
+    const testJob = testJobs[0];
+    const resp = await request(app)
+      .patch(`/jobs/${testJob.id}`)
+      .send({
+        salary: "not-an-integer",
+      })
+      .set("authorization", `Bearer ${u2AdminToken}`);
+    expect(resp.body).toEqual({
+      "error": {
+        "message": [
+          "instance.salary is not of a type(s) integer"
+        ],
+        "status": 400
+      }
+    });
+  });
+
+  test("bad request on invalid equity", async function () {
+    const testJob = testJobs[0];
+    const resp = await request(app)
+      .patch(`/jobs/${testJob.id}`)
+      .send({
+        equity: 2,
+      })
+      .set("authorization", `Bearer ${u2AdminToken}`);
+    expect(resp.body).toEqual({
+      "error": {
+        "message": [
+          "instance.equity must be less than or equal to 1"
+        ],
+        "status": 400
+      }
+    });
+  });
+});
+
+/************************************** DELETE /jobs/:id */
+
+describe("DELETE /jobs/:id", function () {
+  test("works for admin", async function () {
+    const testJob = testJobs[0];
+    const resp = await request(app)
+      .delete(`/jobs/${testJob.id}`)
+      .set("authorization", `Bearer ${u2AdminToken}`);
+    expect(resp.body).toEqual({ deleted: String(testJob.id) });
+  });
+
+  test("unauthorized for non-admin users", async function () {
+    const testJob = testJobs[0];
+    const resp = await request(app)
+      .delete(`/jobs/${testJob.id}`)
+      .set("authorization", `Bearer ${u1NonAdminToken}`);
+    expect(resp.status).toEqual(401)
+    expect(resp.body).toEqual({
+      "error": {
+        "message": "Unauthorized",
+        "status": 401
+      }
+    });
+  });
+
+  test("unauthorized for anon", async function () {
+    const testJob = testJobs[0];
+    const resp = await request(app)
+      .delete(`/jobs/${testJob.id}`)
+    expect(resp.statusCode).toEqual(401);
+    expect(resp.body).toEqual({
+      "error": {
+        "message": "Unauthorized",
+        "status": 401
+      }
+    });
+  });
+
+  test("not found for no such job", async function () {
+    const testJob = testJobs[0];
+    const resp = await request(app)
+      .delete(`/jobs/-1`)
+      .set("authorization", `Bearer ${u2AdminToken}`);
+    expect(resp.statusCode).toEqual(404);
+    expect(resp.body).toEqual({
+      "error": {
+        "message": "No job: -1",
+        "status": 404
+      }
+    });
   });
 });
