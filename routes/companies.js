@@ -44,10 +44,10 @@ router.post("/", ensureLoggedIn, ensureAdmin, async function (req, res, next) {
 /** GET /  =>
  *   { companies: [ { handle, name, description, numEmployees, logoUrl }, ...] }
  *
- * Can filter on provided search filters:
- * - minEmployees
- * - maxEmployees
- * - nameLike (will find case-insensitive, partial matches)
+ * Can filter on provided search filters in query params:
+ * - minEmployees [integer]
+ * - maxEmployees [integer]
+ * - nameLike (will find case-insensitive, partial matches) [string]
  *
  * Authorization required: none
  */

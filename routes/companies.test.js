@@ -377,6 +377,14 @@ describe("GET /companies/:handle", function () {
         description: "Desc1",
         numEmployees: 1,
         logoUrl: "http://c1.img",
+        jobs: [
+          {
+            id: expect.any(Number),
+            equity: "0.1",
+            salary: 1,
+            title: "j1",
+          }
+        ]
       },
     });
   });
@@ -390,6 +398,14 @@ describe("GET /companies/:handle", function () {
         description: "Desc2",
         numEmployees: 2,
         logoUrl: "http://c2.img",
+        jobs: [
+          {
+            "equity": "0.2",
+            "id": expect.any(Number),
+            "salary": 2,
+            "title": "j2",
+          }
+        ]
       },
     });
   });
@@ -422,7 +438,7 @@ describe("PATCH /companies/:handle", function () {
         name: "C1-new",
         description: "Desc1",
         numEmployees: 1,
-        logoUrl: "http://c1.img",
+        logoUrl: "http://c1.img"
       },
     });
   });
@@ -523,7 +539,7 @@ describe("DELETE /companies/:handle", function () {
     const resp = await request(app)
       .delete(`/companies/c1`)
       .set("authorization", `Bearer ${u1NonAdminToken}`);
-    expect(resp.status).toEqual(401)
+    expect(resp.status).toEqual(401);
     expect(resp.body).toEqual({
       "error": {
         "message": "Unauthorized",
