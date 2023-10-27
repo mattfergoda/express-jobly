@@ -100,7 +100,8 @@ router.get("/:handle", async function (req, res, next) {
  *
  * fields can be: { name, description, numEmployees, logo_url }
  *
- * Returns { handle, name, description, numEmployees, logo_url }
+ * Returns { company } where company is like
+ * { handle, name, description, numEmployees, logo_url }
  *
  * Authorization required: admin
  */
@@ -126,9 +127,13 @@ router.patch("/:handle", ensureLoggedIn, ensureAdmin, async function (req, res, 
  * Authorization: admin
  */
 
-router.delete("/:handle", ensureLoggedIn, ensureAdmin, async function (req, res, next) {
-  await Company.remove(req.params.handle);
-  return res.json({ deleted: req.params.handle });
+router.delete(
+  "/:handle",
+  ensureLoggedIn,
+  ensureAdmin,
+  async function (req, res, next) {
+    await Company.remove(req.params.handle);
+    return res.json({ deleted: req.params.handle });
 });
 
 
