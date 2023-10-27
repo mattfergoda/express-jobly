@@ -445,6 +445,7 @@ describe("GET /jobs/:id", function () {
 /************************************** PATCH /jobs/:id */
 
 describe("PATCH /jobs/:id", function () {
+  // TODO: Add status code tests
   test("authorized for admin", async function () {
     const testJob = testJobs[0];
     const resp = await request(app)
