@@ -4,6 +4,14 @@ const db = require("../db");
 const { BadRequestError, NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 
+const ALLOWED_FILTERS = {
+  "title": '\"title\" ILIKE',
+  "minSalary": '\"salary\" >=',
+  "hasEquity": '\"equity\" >'
+};
+
+const ALLOWED_MIN_EQUITY = 0;
+
 /** Related functions for jobs. */
 class Job {
 
@@ -57,8 +65,18 @@ class Job {
    * Returns [{ id, title, salary, equity, companyHandle }, ...]
    * */
 
-  static async findAll() {
+  static async findAll(filters) {
+    const { whereClause, values } = this._sqlWhereClauseBuilder(filters)
 
+    console.log("SQL Statement", `
+    SELECT id,
+           title,
+           salary,
+           equity,
+           company_handle AS "companyHandle"
+    FROM jobs
+    ${whereClause}
+    ORDER BY title`)
     const jobRes = await db.query(`
         SELECT id,
                title,
@@ -66,7 +84,10 @@ class Job {
                equity,
                company_handle AS "companyHandle"
         FROM jobs
-        ORDER BY title`);
+        ${whereClause}
+        ORDER BY title`,
+        values);
+
     return jobRes.rows;
   }
 
@@ -149,6 +170,52 @@ class Job {
 
     if (!job) throw new NotFoundError(`No job: ${id}`);
   }
+
+   /**
+ * Builds a SQL where clause based on user input.
+ *
+ * Takes filters object like
+ * { title [optional], minSalary [optional], hasEquity [optional] }
+ *
+ * Returns object { whereClause, values }
+ * Where whereClause is a string like
+ * "WHERE \"title\" ILIKE '%' || $1 || '%' AND \"salary\" >= $2 AND \"equity\" > 0"
+ * and values is an array like
+ * ['job title', 100]
+ */
+
+static _sqlWhereClauseBuilder(filters) {
+  const keys = filters ? Object.keys(filters) : [];
+
+  if (keys.length === 0) {
+    return {
+      "whereClause": ``,
+      "values": []
+    };
+  }
+
+  const values = [];
+  const filterClause = keys.map((filter, idx) => {
+    if (filter in ALLOWED_FILTERS) {
+      if (filter === 'title') {
+        values.push(filters[filter]);
+        return `${ALLOWED_FILTERS[filter]} '%' || $${idx + 1} || '%'`;
+      }
+      if (filter === 'hasEquity' && filters[filter] === true){
+        values.push(ALLOWED_MIN_EQUITY);
+        return `${ALLOWED_FILTERS[filter]} $${idx + 1}`;
+      }
+      values.push(filters[filter]);
+      return `${ALLOWED_FILTERS[filter]} $${idx + 1}`;
+    }
+  }
+  );
+
+  return {
+    whereClause: "WHERE " + filterClause.join(" AND "),
+    values: values,
+  };
+}
 }
 
 module.exports = Job;
