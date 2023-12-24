@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1698433730915" clover="3.2.0">
-  <project timestamp="1698433730915" name="All files">
-    <metrics statements="399" coveredstatements="398" conditionals="114" coveredconditionals="110" methods="71" coveredmethods="70" elements="584" coveredelements="578" complexity="0" loc="399" ncloc="399" packages="5" files="16" classes="16"/>
+<coverage generated="1703441593961" clover="3.2.0">
+  <project timestamp="1703441593961" name="All files">
+    <metrics statements="398" coveredstatements="397" conditionals="114" coveredconditionals="110" methods="71" coveredmethods="70" elements="583" coveredelements="577" complexity="0" loc="398" ncloc="398" packages="5" files="16" classes="16"/>
     <package name="express-jobly">
       <metrics statements="52" coveredstatements="51" conditionals="18" coveredconditionals="16" methods="9" coveredmethods="8"/>
-      <file name="app.js" path="/home/jjin/rithm/assessment/express-jobly/app.js">
+      <file name="app.js" path="/Users/Matt/rithm/exercises/express-jobly/app.js">
         <metrics statements="25" coveredstatements="25" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
         <line num="5" count="5" type="stmt"/>
         <line num="6" count="5" type="stmt"/>
@@ -32,7 +32,7 @@
         <line num="43" count="60" type="stmt"/>
         <line num="48" count="5" type="stmt"/>
       </file>
-      <file name="config.js" path="/home/jjin/rithm/assessment/express-jobly/config.js">
+      <file name="config.js" path="/Users/Matt/rithm/exercises/express-jobly/config.js">
         <metrics statements="9" coveredstatements="9" conditionals="12" coveredconditionals="12" methods="1" coveredmethods="1"/>
         <line num="5" count="11" type="stmt"/>
         <line num="6" count="11" type="stmt"/>
@@ -44,7 +44,7 @@
         <line num="24" count="1" type="stmt"/>
         <line num="34" count="11" type="stmt"/>
       </file>
-      <file name="db.js" path="/home/jjin/rithm/assessment/express-jobly/db.js">
+      <file name="db.js" path="/Users/Matt/rithm/exercises/express-jobly/db.js">
         <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="5" count="8" type="stmt"/>
         <line num="6" count="8" type="stmt"/>
@@ -57,7 +57,7 @@
         <line num="25" count="8" type="stmt"/>
         <line num="27" count="8" type="stmt"/>
       </file>
-      <file name="expressError.js" path="/home/jjin/rithm/assessment/express-jobly/expressError.js">
+      <file name="expressError.js" path="/Users/Matt/rithm/exercises/express-jobly/expressError.js">
         <metrics statements="8" coveredstatements="7" conditionals="4" coveredconditionals="2" methods="5" coveredmethods="4"/>
         <line num="11" count="86" type="stmt"/>
         <line num="12" count="86" type="stmt"/>
@@ -71,7 +71,7 @@
     </package>
     <package name="express-jobly.helpers">
       <metrics statements="12" coveredstatements="12" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="3"/>
-      <file name="sql.js" path="/home/jjin/rithm/assessment/express-jobly/helpers/sql.js">
+      <file name="sql.js" path="/Users/Matt/rithm/exercises/express-jobly/helpers/sql.js">
         <metrics statements="7" coveredstatements="7" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
         <line num="3" count="9" type="stmt"/>
         <line num="28" count="23" type="stmt"/>
@@ -81,7 +81,7 @@
         <line num="36" count="19" type="stmt"/>
         <line num="45" count="9" type="stmt"/>
       </file>
-      <file name="tokens.js" path="/home/jjin/rithm/assessment/express-jobly/helpers/tokens.js">
+      <file name="tokens.js" path="/Users/Matt/rithm/exercises/express-jobly/helpers/tokens.js">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="3" count="6" type="stmt"/>
         <line num="4" count="6" type="stmt"/>
@@ -92,7 +92,7 @@
     </package>
     <package name="express-jobly.middleware">
       <metrics statements="19" coveredstatements="19" conditionals="10" coveredconditionals="10" methods="4" coveredmethods="4"/>
-      <file name="auth.js" path="/home/jjin/rithm/assessment/express-jobly/middleware/auth.js">
+      <file name="auth.js" path="/Users/Matt/rithm/exercises/express-jobly/middleware/auth.js">
         <metrics statements="19" coveredstatements="19" conditionals="10" coveredconditionals="10" methods="4" coveredmethods="4"/>
         <line num="5" count="6" type="stmt"/>
         <line num="6" count="6" type="stmt"/>
@@ -116,8 +116,8 @@
       </file>
     </package>
     <package name="express-jobly.models">
-      <metrics statements="142" coveredstatements="142" conditionals="52" coveredconditionals="50" methods="24" coveredmethods="24"/>
-      <file name="_testCommon.js" path="/home/jjin/rithm/assessment/express-jobly/models/_testCommon.js">
+      <metrics statements="141" coveredstatements="141" conditionals="52" coveredconditionals="50" methods="24" coveredmethods="24"/>
+      <file name="_testCommon.js" path="/Users/Matt/rithm/exercises/express-jobly/models/_testCommon.js">
         <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
         <line num="3" count="3" type="stmt"/>
         <line num="5" count="3" type="stmt"/>
@@ -133,7 +133,7 @@
         <line num="51" count="3" type="stmt"/>
         <line num="55" count="3" type="stmt"/>
       </file>
-      <file name="company.js" path="/home/jjin/rithm/assessment/express-jobly/models/company.js">
+      <file name="company.js" path="/Users/Matt/rithm/exercises/express-jobly/models/company.js">
         <metrics statements="42" coveredstatements="42" conditionals="18" coveredconditionals="17" methods="7" coveredmethods="7"/>
         <line num="3" count="6" type="stmt"/>
         <line num="4" count="6" type="stmt"/>
@@ -178,8 +178,8 @@
         <line num="218" count="12" type="stmt"/>
         <line num="226" count="6" type="stmt"/>
       </file>
-      <file name="job.js" path="/home/jjin/rithm/assessment/express-jobly/models/job.js">
-        <metrics statements="47" coveredstatements="47" conditionals="20" coveredconditionals="19" methods="7" coveredmethods="7"/>
+      <file name="job.js" path="/Users/Matt/rithm/exercises/express-jobly/models/job.js">
+        <metrics statements="46" coveredstatements="46" conditionals="20" coveredconditionals="19" methods="7" coveredmethods="7"/>
         <line num="3" count="6" type="stmt"/>
         <line num="4" count="6" type="stmt"/>
         <line num="5" count="6" type="stmt"/>
@@ -192,7 +192,6 @@
         <line num="55" count="18" type="stmt"/>
         <line num="57" count="18" type="stmt"/>
         <line num="69" count="14" type="stmt"/>
-        <line num="71" count="14" type="stmt"/>
         <line num="80" count="14" type="stmt"/>
         <line num="91" count="14" type="stmt"/>
         <line num="104" count="4" type="stmt"/>
@@ -228,7 +227,7 @@
         <line num="218" count="10" type="stmt"/>
         <line num="225" count="6" type="stmt"/>
       </file>
-      <file name="user.js" path="/home/jjin/rithm/assessment/express-jobly/models/user.js">
+      <file name="user.js" path="/Users/Matt/rithm/exercises/express-jobly/models/user.js">
         <metrics statements="40" coveredstatements="40" conditionals="14" coveredconditionals="14" methods="6" coveredmethods="6"/>
         <line num="3" count="6" type="stmt"/>
         <line num="4" count="6" type="stmt"/>
@@ -274,7 +273,7 @@
     </package>
     <package name="express-jobly.routes">
       <metrics statements="174" coveredstatements="174" conditionals="30" coveredconditionals="30" methods="31" coveredmethods="31"/>
-      <file name="_testCommon.js" path="/home/jjin/rithm/assessment/express-jobly/routes/_testCommon.js">
+      <file name="_testCommon.js" path="/Users/Matt/rithm/exercises/express-jobly/routes/_testCommon.js">
         <metrics statements="28" coveredstatements="28" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
         <line num="3" count="4" type="stmt"/>
         <line num="4" count="4" type="stmt"/>
@@ -305,7 +304,7 @@
         <line num="117" count="4" type="stmt"/>
         <line num="120" count="4" type="stmt"/>
       </file>
-      <file name="auth.js" path="/home/jjin/rithm/assessment/express-jobly/routes/auth.js">
+      <file name="auth.js" path="/Users/Matt/rithm/exercises/express-jobly/routes/auth.js">
         <metrics statements="26" coveredstatements="26" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="4"/>
         <line num="5" count="5" type="stmt"/>
         <line num="7" count="5" type="stmt"/>
@@ -334,7 +333,7 @@
         <line num="62" count="1" type="stmt"/>
         <line num="66" count="5" type="stmt"/>
       </file>
-      <file name="companies.js" path="/home/jjin/rithm/assessment/express-jobly/routes/companies.js">
+      <file name="companies.js" path="/Users/Matt/rithm/exercises/express-jobly/routes/companies.js">
         <metrics statements="42" coveredstatements="42" conditionals="10" coveredconditionals="10" methods="8" coveredmethods="8"/>
         <line num="5" count="5" type="stmt"/>
         <line num="6" count="5" type="stmt"/>
@@ -379,7 +378,7 @@
         <line num="136" count="1" type="stmt"/>
         <line num="140" count="5" type="stmt"/>
       </file>
-      <file name="jobs.js" path="/home/jjin/rithm/assessment/express-jobly/routes/jobs.js">
+      <file name="jobs.js" path="/Users/Matt/rithm/exercises/express-jobly/routes/jobs.js">
         <metrics statements="44" coveredstatements="44" conditionals="12" coveredconditionals="12" methods="8" coveredmethods="8"/>
         <line num="5" count="5" type="stmt"/>
         <line num="6" count="5" type="stmt"/>
@@ -403,30 +402,30 @@
         <line num="60" count="5" type="stmt"/>
         <line num="62" count="12" type="cond" truecount="2" falsecount="0"/>
         <line num="63" count="3" type="stmt"/>
-        <line num="65" count="12" type="cond" truecount="2" falsecount="0"/>
-        <line num="66" count="1" type="stmt"/>
-        <line num="69" count="12" type="stmt"/>
-        <line num="75" count="12" type="cond" truecount="2" falsecount="0"/>
-        <line num="76" count="4" type="stmt"/>
+        <line num="66" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="67" count="1" type="stmt"/>
+        <line num="70" count="12" type="stmt"/>
+        <line num="76" count="12" type="cond" truecount="2" falsecount="0"/>
         <line num="77" count="4" type="stmt"/>
-        <line num="80" count="8" type="stmt"/>
-        <line num="82" count="8" type="stmt"/>
-        <line num="93" count="5" type="stmt"/>
-        <line num="94" count="2" type="stmt"/>
-        <line num="95" count="1" type="stmt"/>
-        <line num="110" count="5" type="stmt"/>
+        <line num="78" count="4" type="stmt"/>
+        <line num="81" count="8" type="stmt"/>
+        <line num="83" count="8" type="stmt"/>
+        <line num="94" count="5" type="stmt"/>
+        <line num="95" count="2" type="stmt"/>
+        <line num="96" count="1" type="stmt"/>
         <line num="111" count="5" type="stmt"/>
-        <line num="116" count="5" type="cond" truecount="2" falsecount="0"/>
-        <line num="117" count="3" type="stmt"/>
+        <line num="112" count="5" type="stmt"/>
+        <line num="117" count="5" type="cond" truecount="2" falsecount="0"/>
         <line num="118" count="3" type="stmt"/>
-        <line num="121" count="2" type="stmt"/>
-        <line num="122" count="1" type="stmt"/>
-        <line num="130" count="5" type="stmt"/>
-        <line num="135" count="2" type="stmt"/>
-        <line num="136" count="1" type="stmt"/>
-        <line num="140" count="5" type="stmt"/>
+        <line num="119" count="3" type="stmt"/>
+        <line num="122" count="2" type="stmt"/>
+        <line num="123" count="1" type="stmt"/>
+        <line num="131" count="5" type="stmt"/>
+        <line num="136" count="2" type="stmt"/>
+        <line num="137" count="1" type="stmt"/>
+        <line num="141" count="5" type="stmt"/>
       </file>
-      <file name="users.js" path="/home/jjin/rithm/assessment/express-jobly/routes/users.js">
+      <file name="users.js" path="/Users/Matt/rithm/exercises/express-jobly/routes/users.js">
         <metrics statements="34" coveredstatements="34" conditionals="4" coveredconditionals="4" methods="7" coveredmethods="7"/>
         <line num="5" count="5" type="stmt"/>
         <line num="7" count="5" type="stmt"/>
