@@ -6,10 +6,24 @@ This is the RESTful API for Jobly, an application for browsing companies and job
 
 [Frontend Code](https://github.com/mattfergoda/jobly-frontend)
 
-To run this:
+## Running Locally
+From the root directory of the project, run:
+
+    npm install
+
+Create a PostgreSQL database called `jobly`:
+    
+    createdb jobly
+
+If you plan to run the projects tests, you'll also want to create a test database:
+
+    createdb jobly_test
+ 
+To run the development server, run:
 
     node server.js
     
+## Tests
 To run the tests:
 
     jest -i
